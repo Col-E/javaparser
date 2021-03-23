@@ -1,15 +1,14 @@
 package com.github.javaparser.symbolsolver;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
-
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class Issue2477Test extends AbstractSymbolResolutionTest {
@@ -24,8 +23,13 @@ public class Issue2477Test extends AbstractSymbolResolutionTest {
 
         String s = 
                 "class A {\n" + 
-                "    void method() {\n" + 
-                "        A a = this;\n" + 
+                "    void method() {\n" +
+                "        A a = this;\n";
+        for (int i = 0; i < 10_000; i++)
+        {
+            s += "A _" + i + "  = this;\n";
+        }
+        s +=
                 "        {\n" + 
                 "            a.method();\n" + 
                 "        }\n" + 
